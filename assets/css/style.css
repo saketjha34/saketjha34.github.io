@@ -740,7 +740,9 @@ main {
 }
 
 .clients-item img:hover { filter: grayscale(0); }
-
+.clients-item h4{
+  font-size: 15px;
+}
 .certificate-heading{ 
   color: white; 
 }
@@ -1227,6 +1229,7 @@ textarea.form-input::-webkit-resizer { display: none; }
    */
 
   .clients-item { min-width: calc(33.33% - 10px); }
+  
 
 
 

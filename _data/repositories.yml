@@ -1,14 +1,12 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - saketjha34
 
 repo_description_lines_max: 2
 
 github_repos:
-  - alshedivat/al-folio
-  - jekyll/jekyll
-  - twbs/bootstrap
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - mathjax/MathJax
-  - jpswalsh/academicons
+  - saketjha34/PARAGON
+  - saketjha34/ATLAS
+  - saketjha34/FilmFusion
+  - saketjha34/FileForge
+  - saketjha34/KaggleX-Skill-Assessment-ML-Competition-top-1-Solution
+  - saketjha34/ARC

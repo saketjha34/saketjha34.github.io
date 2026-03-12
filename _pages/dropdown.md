@@ -1,13 +1,14 @@
 ---
 layout: page
-title: submenus
+title: Work Experience
+permalink: /experience/
 nav: true
 nav_order: 8
 dropdown: true
 children:
-  - title: bookshelf
-    permalink: /books/
-  - title: divider
-  - title: blog
-    permalink: /blog/
+  - title: Kalppo
+    permalink: /experience/kalppo/
+  # - title: divider
+  # - title: blog
+  #   permalink: /blog/
 ---

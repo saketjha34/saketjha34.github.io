@@ -1,7 +1,7 @@
 ---
-layout: book-shelf
-title: bookshelf
-permalink: /books/
+layout: post
+title: Kalppo
+permalink: /experience/kalppo/
 nav: false
 collection: books
 ---

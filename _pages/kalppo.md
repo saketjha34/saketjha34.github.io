@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Kalppo
+title: Internship Experience at Kalppo!
 permalink: /experience/kalppo/
 nav: false
+date: 03-12-2025 23:00:00
 collection: books
 toc:
   sidebar: left
@@ -564,3 +565,602 @@ $$
 |  }                                                                                                    |
 '-------------------------------------------------------------------------------------------------------'
 ```
+
+### 2. AI Question Extraction Pipeline
+
+One of the major tasks during my internship was building an **AI Question Extraction Pipeline**.
+
+The goal of this system was to automatically **extract questions from educational documents** such as:
+
+- Previous Year Question Papers (PYQs)
+- DPPs (Daily Practice Problems)
+- Coaching Modules
+- Handwritten Notes
+- Worksheets
+- Mock Test Papers
+
+and convert them into **structured question objects that could be stored in the database**.
+
+Many interns had attempted solving this problem earlier, but building a **reliable production-ready solution** turned out to be quite challenging.
+
+
+#### Initial Experiments
+
+Initially, I experimented with **DSPy**, a framework designed for building LLM pipelines.
+
+DSPy allows:
+
+- better prompt engineering
+- training LLMs on structured datasets
+- automatic evaluation of LLM outputs
+- optimization of prompts through feedback loops
+
+While DSPy was powerful, the pipeline became **too heavy and complex** for our use case, and the task needed to be delivered quickly.
+
+So I decided to rethink the approach.
+
+#### Microservices Approach
+
+Instead of solving the entire problem at once, I broke the system into **smaller independent services**.
+
+The pipeline was divided into stages:
+
+1. Document → OCR
+2. OCR → Markdown text
+3. Markdown → Semantic chunks
+4. Chunks → Question extraction
+5. Validation → Database storage
+
+Breaking the system into microservices allowed each stage to be **independently optimized and debugged**.
+
+
+#### Step 1: Extracting Text from Documents (OCR)
+
+The first major problem was converting the uploaded **PDF or image documents into textual data**.
+
+For this, I used **Mistral OCR**, which at the time was one of the best OCR systems available.
+
+Key advantages of Mistral OCR:
+
+- Maintains **mathematical formulas in LaTeX**
+- Preserves **tables and MCQ formatting**
+- Extracts **diagrams and images**
+- Maintains **organic chemistry structures**
+- Outputs **Markdown formatted text**
+
+This was extremely useful because **JEE / NEET questions heavily depend on mathematical expressions**.
+
+
+#### Example Extracted Markdown
+
+Below is an example of markdown extracted from a question paper.
+
+```markdown
+# SECTION - I  
+(SINGLE CORRECT ANSWER TYPE)
+
+This section contains 20 multiple choice questions.
+
+1. Consider the ratio  
+$r=\frac{(1-a)}{(1+a)}$  
+
+If the error in measurement of $a$ is $\Delta a$, then the maximum possible error in $r$ is:
+
+1) $\frac{\Delta a}{(1+a)^2}$  
+2) $\frac{2\Delta a}{(1+a)^2}$  
+3) $\frac{2\Delta a}{(1-a^2)}$  
+4) $\frac{2a\Delta a}{(1-a^2)}$
+````
+
+As you can see, the OCR output preserves:
+
+* **LaTeX formulas**
+* **MCQ options**
+* **document structure**
+
+This made it much easier to process questions downstream.
+
+#### OCR Processing Service
+
+Below is a simplified version of the OCR service.
+
+```python
+from mistralai import Mistral
+from pydantic import BaseModel, HttpUrl
+import filetype
+
+client = Mistral(api_key="MISTRAL_API_KEY")
+
+class TranscribeResponse(BaseModel):
+    markdown_text: str
+    num_pages: int
+
+def transcribe(file_url: HttpUrl) -> TranscribeResponse:
+
+    # call mistral OCR
+    ocr_response = client.ocr.process(
+        model="mistral-ocr-latest",
+        document={"type": "document_url", "document_url": file_url}
+    )
+
+    markdown_text = ""
+
+    for page in ocr_response.pages:
+        markdown_text += page.markdown + "\n\n"
+
+    return TranscribeResponse(
+        markdown_text=markdown_text.strip(),
+        num_pages=len(ocr_response.pages)
+    )
+```
+
+This service:
+
+1. downloads the document
+2. sends it to **Mistral OCR**
+3. receives structured OCR output
+4. converts it into **clean Markdown text**
+
+```mermaid
+flowchart LR
+
+A[PDF / Image Upload]
+B[Mistral OCR]
+C[Markdown Output]
+D[Image Extraction]
+E[Supabase Storage]
+F[Structured Markdown]
+
+A --> B
+B --> C
+C --> D
+D --> E
+C --> F
+```
+
+At this point, we had successfully converted raw documents into structured Markdown text.
+
+The next challenge was to extract individual questions from this Markdown, which required a completely different AI pipeline.
+
+#### Step 2: Extracting Individual Questions from Markdown
+
+The first step (OCR → Markdown conversion) was already implemented by several interns.
+
+However, the **real challenge** started in the next stage  extracting each individual question in a structured format so that it could be stored in the database.
+
+The OCR output for a typical **JEE test paper containing ~90 questions** produced around:
+
+- **25–30 pages of Markdown**
+- roughly **50,000–60,000 characters**
+
+Sending the entire document to an LLM at once was impossible because of token limits.
+
+At that time:
+
+- maximum **output tokens ≈ 32k**
+- maximum **input tokens ≈ 8k**
+
+So the document had to be **split into smaller chunks**.
+
+#### The Naive Chunking Approach
+
+The obvious approach would be:
+
+> Split the Markdown text into smaller chunks and send each chunk to the LLM.
+
+However, this approach quickly failed.
+
+Because the chunking was **random**, it often separated:
+
+- the **question statement**
+- the **options**
+- the **answer / explanation**
+
+into **different chunks**.
+
+Example problem:
+
+```markdown
+Chunk 1:
+Question statement
+
+Chunk 2:
+Options A B C D
+```
+
+In such cases, the LLM could not understand that both pieces belonged to the **same question**.
+
+This resulted in:
+- orphan questions
+- incomplete options
+- hallucinated questions
+
+For an EdTech platform, accuracy was extremely important. Coaching institutes wanted **exact question extraction**, not AI-generated approximations.
+So this approach was **not acceptable**.
+
+#### Semantic Chunking Attempt
+
+The next idea was to use **semantic chunking**, which is commonly used in industry for splitting large documents before sending them to LLMs.
+
+The idea is simple:
+
+1. Convert text into embeddings
+2. Split the document at semantic boundaries
+
+This method is much smarter than random splitting.
+
+Example implementation:
+
+```python
+from langchain_openai import OpenAIEmbeddings
+from langchain_experimental.text_splitter import SemanticChunker
+
+def generate_semantic_chunks(markdown_text: str):
+
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-3-large"
+    )
+
+    chunker = SemanticChunker(
+        embeddings,
+        min_chunk_size=400,
+        breakpoint_threshold_type="percentile",
+        breakpoint_threshold_amount=95
+    )
+
+    return chunker.split_text(markdown_text)
+```
+
+While this approach worked well for **general text documents**, it still had problems for **exam papers**.
+
+#### Extraction Pipeline Overview
+
+Or visually:
+
+```mermaid
+flowchart LR
+
+A[OCR Markdown Text]
+B[Structured Chunking Algorithm]
+C[Question-Level Chunks]
+D[LLM Extraction]
+E[JSON Validation]
+F[Database Storage]
+
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+```
+
+
+#### Step 3: LLM Extraction Layer
+
+Once the document was converted into **structured question-level chunks**, the next step was to extract questions in a **fully structured format**.
+
+Each chunk was sent to an **LLM extraction layer**, where a generalized prompt instructed the model to identify:
+
+- question statements
+- options
+- correct answers
+- explanations
+- associated images or diagrams
+
+The goal was to convert raw chunk text into structured **question objects** that could be stored in the database.
+
+
+#### Parallel Chunk Processing
+
+Since a document could contain **50–100 questions**, each chunk was processed **concurrently** to improve performance.
+
+Below is a simplified version of the extraction pipeline.
+
+```python
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+async def extract_questions_from_chunks(chunks):
+
+    executor = ThreadPoolExecutor(max_workers=4)
+
+    def process_chunk(chunk_text):
+
+        prompt = ExtractQuestionEntityPrompt.render(chunk_text)
+
+        response = gemini.generate_content(
+            model="gemini-2.5-flash",
+            contents=[prompt]
+        )
+
+        json_output = parse_json(response.text)
+
+        return ExtractedQuestionEntity.model_validate(json_output)
+
+    loop = asyncio.get_running_loop()
+
+    tasks = [
+        loop.run_in_executor(executor, process_chunk, chunk)
+        for chunk in chunks
+    ]
+
+    results = await asyncio.gather(*tasks)
+
+    entities = []
+    for r in results:
+        entities.extend(r.root)
+
+    return entities
+```
+
+Key ideas in this stage:
+
+* Each chunk is processed **independently**
+* Gemini generates **JSON structured outputs**
+* Pydantic validates schema correctness
+* The system merges entities into final question objects
+
+#### Schema Validation Layer
+
+To ensure the LLM output was **correct and reliable**, I used **Pydantic schemas**.
+
+These schemas validated:
+
+* question text
+* options
+* answers
+* explanations
+* associated images
+
+Example simplified schema:
+
+```python
+from pydantic import BaseModel
+from typing import List, Optional
+from enum import StrEnum
+
+class QuestionType(StrEnum):
+    MULTIPLE_CHOICE = "multiple_choice"
+    NUMERICAL = "numerical"
+    TEXT = "text"
+
+class Option(BaseModel):
+    label: str
+    text: str
+    is_correct: bool
+
+class ExtractedQuestion(BaseModel):
+    question_label: str
+    question: str
+    type: QuestionType
+    options: Optional[List[Option]]
+    correct_answer: Optional[str]
+    explanation: Optional[str]
+```
+The schemas guaranteed that the LLM output always matched the **expected structure** before storing it in the database.
+
+#### Prompt Rendering Layer
+
+Prompts were rendered dynamically using a **PromptManager**.
+
+```python
+class ExtractQuestionEntityPrompt:
+
+    _version = "202506062213"
+
+    @staticmethod
+    def render(chunk: str):
+
+        return PromptManager.render(
+            "extract_question_entity_prompt",
+            ExtractQuestionEntityPrompt._version,
+            chunk=chunk
+        )
+```
+
+This made it easy to **version prompts and improve extraction quality** without changing the code.
+
+#### Question Extraction Pipeline
+
+```mermaid
+flowchart LR
+
+A[Markdown Chunk]
+B[Prompt Rendering]
+C[Gemini API]
+D[JSON Output]
+E[Pydantic Validation]
+F[Merged Question Entities]
+G[Database Storage]
+
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+F --> G
+```
+
+#### Extracted Entity Schema
+
+The system supported three entity types:
+
+1. **Question without explanation**
+2. **Explanation entity**
+3. **Answer key entity**
+
+These entities were later merged into a final **ExtractedQuestion object**.
+
+```mermaid
+classDiagram
+
+class ExtractedQuestionWithoutExplanation{
+question_label
+question
+type
+options
+images
+subject
+chapter
+concepts
+}
+
+class ExtractedQuestionExplanation{
+question_label
+explanation
+explanation_images
+correct_answer
+}
+
+class ExtractedAnswerkey{
+question_label
+correct_answer
+}
+
+class ExtractedQuestionEntity{
+List~Entities~
+}
+
+ExtractedQuestionEntity --> ExtractedQuestionWithoutExplanation
+ExtractedQuestionEntity --> ExtractedQuestionExplanation
+ExtractedQuestionEntity --> ExtractedAnswerkey
+```
+
+#### Step 4: API Orchestration and Database Storage
+
+After building the OCR layer, chunking layer, and LLM extraction layer, the final step was to expose the entire pipeline through a FastAPI endpoint.
+
+This endpoint acts as the entry point for the extraction system, allowing coaching institutes or internal services to submit a document for question extraction.
+
+The pipeline performs the following steps:
+
+1. Receive extraction request
+2. Run OCR on the uploaded document
+3. Convert the document into Markdown
+4. Split the Markdown into structured chunks
+5. Send chunks to the LLM extraction layer
+6. Validate structured outputs
+7. Store extracted questions in the database
+
+Because extracting questions from a large document could take **several seconds to minutes**, the extraction process was implemented using **background tasks**.
+
+This allowed the API to return immediately while the extraction pipeline continued processing asynchronously.
+
+
+#### FastAPI Endpoint
+
+Below is a simplified version of the API endpoint.
+
+```python
+from fastapi import APIRouter, BackgroundTasks
+from pydantic import BaseModel
+
+router = APIRouter()
+
+class ExtractQuestionRequest(BaseModel):
+    long_running_operation_id: str
+
+@router.post("/extract_question_entity")
+async def extract_question_entity_route(request: ExtractQuestionRequest,
+                                         background_tasks: BackgroundTasks):
+
+    background_tasks.add_task(
+        process_extract_question_entity_task,
+        request.long_running_operation_id
+    )
+
+    return {"status": "Processing started"}
+```
+
+This endpoint:
+
+* receives a **long running operation id**
+* schedules the extraction pipeline
+* returns immediately with a **processing status**
+
+#### Extraction Pipeline Orchestration
+
+The background task coordinates all pipeline components.
+
+```python
+def process_extract_question_entity_task(operation_id):
+
+    # Step 1: OCR
+    transcription = transcribe(file_url)
+
+    # Step 2: Chunking
+    if transcription.num_pages < 3:
+        chunks = [transcription.markdown_text]
+    else:
+        chunks = generate_semantic_chunks(transcription.markdown_text)
+
+    # Step 3: LLM Extraction
+    extracted_questions = asyncio.run(
+        extract_questions_from_chunks(chunks)
+    )
+
+    # Step 4: Store results
+    save_questions_to_database(extracted_questions)
+```
+
+This function combines the **three previously built microservices**:
+
+* OCR service
+* chunking service
+* LLM extraction service
+
+#### Database Storage
+
+Once questions were extracted and validated, they were stored in the database.
+
+Each question record contained:
+
+* question text
+* options
+* correct answer
+* explanation
+* subject
+* chapter
+* related images
+
+The pipeline stored both:
+
+* **processed questions**
+* **raw extraction output**
+
+#### Final Pipeline Architecture
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant FastAPI
+    participant OCR as Mistral OCR
+    participant Chunker as Chunking Engine
+    participant LLM as Gemini LLM
+    participant Validator as Pydantic Validation
+    participant DB as PostgreSQL
+    participant Storage as Supabase Storage
+
+    Client->>FastAPI: Upload document (PDF/Image)
+    FastAPI->>OCR: Send file for OCR processing
+    OCR-->>FastAPI: Return Markdown text + images
+
+    FastAPI->>Chunker: Generate structured chunks
+    Chunker-->>FastAPI: Question-level chunks
+
+    FastAPI->>LLM: Send chunk + extraction prompt
+    LLM-->>FastAPI: Structured JSON questions
+
+    FastAPI->>Validator: Validate schema
+    Validator-->>FastAPI: Valid ExtractedQuestion objects
+
+    FastAPI->>Storage: Upload extracted images
+    Storage-->>FastAPI: Image URLs
+
+    FastAPI->>DB: Store structured questions
+    DB-->>FastAPI: Confirmation
+
+    FastAPI-->>Client: Extraction status / results
+```
+
+

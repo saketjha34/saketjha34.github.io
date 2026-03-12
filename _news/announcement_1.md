@@ -1,8 +1,20 @@
 ---
 layout: post
-date: 2015-10-22 15:59:00-0400
-inline: true
-related_posts: false
+title: Completed My AI Engineer Internship at Kalppo!
+permalink: /kalppo-internship/
+date: 2025-07-20 16:11:00
+inline: false
+related_posts: true
 ---
 
-A simple inline announcement.
+I’m excited to share that I’ve successfully completed my **AI Engineer Internship at Kalppo**.
+
+During this internship I worked on several AI systems including:
+
+- STEM Question Generation
+- AI Question Extraction Pipeline
+- Workbook Evaluation System
+
+You can read the full detailed write-up of my experience here:
+
+[Read the full internship experience](/experience/kalppo/)

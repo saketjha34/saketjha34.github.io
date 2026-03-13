@@ -8,8 +8,8 @@ dropdown: true
 children:
   - title: Kalppo
     permalink: /experience/kalppo/
-  - title: GSOC 2026
-    permalink: /experience/GSOC-2026/
+  # - title: GSOC 2026
+  #   permalink: /experience/GSOC-2026/
   # - title: divider
   # - title: blog
   #   permalink: /blog/

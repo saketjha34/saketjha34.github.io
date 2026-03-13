@@ -2,10 +2,10 @@
 layout: post
 title: Building Scalable Backend Systems with FastAPI and PostgreSQL
 date: 2025-08-22 21:00:00
-description: Building scalable backend systems is one of the most critical aspects of modern software development. In this comprehensive guide, we'll explore how to design and implement robust backend architectures using **FastAPI** and **PostgreSQL** that can handle millions of requests while maintaining high performance and reliability.
+description: Building scalable backend systems is one of the most critical aspects of modern software development. In this comprehensive guide, we'll explore how to design and implement robust backend architectures using FastAPI and PostgreSQL that can handle millions of requests while maintaining high performance and reliability.
 tags: [backend, fastapi, postgresql,]
 categories: backend-development
-thumbnail: assets/img/9.jpg
+# thumbnail: assets/img/9.jpg
 pinned: true
 ---
 

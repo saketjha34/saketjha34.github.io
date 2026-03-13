@@ -2,10 +2,10 @@
 layout: post
 title: Semantic Search with FAISS From Theory to Production
 date: 2025-09-23 17:00:00
-description: Semantic search has revolutionized how we find and retrieve information. Unlike traditional keyword-based search, semantic search understands the meaning and context behind queries, enabling more intelligent and relevant results. In this comprehensive guide, we'll explore how to implement production-ready semantic search systems using FAISS (Facebook AI Similarity Search) and sentence transformers.
+description: Semantic search has revolutionized how we find and retrieve information. Unlike traditional keyword-based search, semantic search understands the meaning and context behind queries, enabling more intelligent and relevant results. In this comprehensive guide, we'll explore how to implement production ready semantic search systems using FAISS (Facebook AI Similarity Search) and sentence transformers.
 tags: [semantic-search, vector-store]
 categories: NLP
-thumbnail: assets/img/9.jpg
+# thumbnail: assets/img/9.jpg
 pinned: true
 ---
 

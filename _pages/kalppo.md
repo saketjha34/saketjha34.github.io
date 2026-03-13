@@ -75,27 +75,18 @@ It was a simple but very engaging activity and helped everyone get comfortable w
 
 Overall, it was a great experience meeting the team and mentors. The session helped us understand the **vision behind the startup**, the product they were building, and the people we would be working with over the next few months.
 
-
-Below is a **clean `.md` section** you can paste under **`## Projects I Worked On`** in your post.
-It follows your structure:
-
-1. Brief overview of the three projects
-2. Detailed explanation of the **first project (STEM Question Generation)**
-3. Includes **Python code blocks, Mermaid diagram, and TikZ example**
-
-
 ## Projects I Worked On
 
-During my internship at Kalppo, I mainly worked on three AI-focused projects that were closely related to the EdTech platform.
+During my internship at Kalppo, I worked on multiple AI-driven systems aimed at improving automation within the EdTech platform. The primary focus of these projects was to automate question generation, question extraction from educational documents**, and student answer evaluation. These systems helped reduce manual effort for educators while enabling scalable content creation and assessment.
 
-STEM Question Generation
-The goal of this system was to automatically generate **similar questions for an existing question** so that coaching institutes could expand their **question banks**. This would allow students to practice more variations of a concept instead of repeating the same problems.
+> STEM Question Generation
+- Built a system to automatically generate **similar STEM questions** from an existing question.
 
-AI Question Extraction Pipeline
-This pipeline focused on **extracting questions from uploaded documents such as PDFs or scanned worksheets**. The system used OCR and structured parsing to convert raw documents into **structured question objects** that could be stored in the database.
+> AI Question Extraction Pipeline
+- Developed a pipeline to **extract questions from educational documents** such as PDFs and scanned worksheets.
 
-Workbook Evaluation App
-This project focused on building an **AI-powered evaluation system** where students could upload workbook answers and the system could automatically evaluate them using LLM-based reasoning and answer matching.
+> Workbook Evaluation App
+- Built an **AI-powered evaluation system** for assessing student workbook answers.
 
 
 ### 1. STEM Question Generation
@@ -130,14 +121,14 @@ The basic pipeline looked like this:
 
 To generate similar questions, I first designed a **prompt layer** responsible for converting input questions into structured prompts for the LLM.
 
-Instead of writing raw prompts everywhere in the codebase, I created a **prompt management layer** that dynamically renders prompts depending on:
+Instead of writing raw prompts everywhere in the codebase, I created a prompt management layer that dynamically renders prompts depending on:
 
 - subject (math / physics / chemistry)
 - chapter
 - number of variations required
 - question type
 
-For example, chemistry questions belonging to **organic chemistry chapters** used a different prompt template because they required **SMILES representations for molecular structures**.
+For example, chemistry questions belonging to organic chemistry chapters used a different prompt template because they required SMILES representations for molecular structures.
 
 
 #### Prompt Rendering Logic
@@ -190,7 +181,7 @@ class GenerateSimilarQuestionPrompt:
         )
 ```
 
-This prompt was then sent to the **LLM**, which generated similar questions in **structured JSON format**.
+This prompt was then sent to the LLM, which generated similar questions in structured JSON format.
 
 
 #### Prompt Generation Pipeline
@@ -228,7 +219,7 @@ For the generation pipeline I used:
 * **Gemini 2.5**
 * **Gemini 2 Pro**
 
-These models worked well for generating **conceptually similar but diverse questions**.
+These models worked well for generating conceptually similar but diverse questions.
 
 I used the **Gemini Python API** together with **Pydantic schemas** to validate responses.
 
@@ -322,7 +313,7 @@ Math questions mainly relied on **LaTeX formatting** and symbolic expressions.
 
 #### Chemistry (SMILES notation)
 
-For **organic chemistry questions**, I used **SMILES representation** to generate molecular structures.
+For organic chemistry questions, I used **SMILES representation** to generate molecular structures.
 
 Example:
 
@@ -375,7 +366,7 @@ Example circuit diagram generated using LaTeX CircuitTikZ and rendered into an i
 
 #### Example Result: Generated Question Variations
 
-Below is an example showing how the system generates **multiple variations of a given question** while preserving the underlying concept.
+Below is an example showing how the system generates multiple variations of a given question while preserving the underlying concept.
 
 
 #### Original Question
@@ -568,9 +559,9 @@ $$
 
 ### 2. AI Question Extraction Pipeline
 
-One of the major tasks during my internship was building an **AI Question Extraction Pipeline**.
+One of the major tasks during my internship was building an AI Question Extraction Pipeline.
 
-The goal of this system was to automatically **extract questions from educational documents** such as:
+The goal of this system was to automatically extract questions from educational documents such as:
 
 - Previous Year Question Papers (PYQs)
 - DPPs (Daily Practice Problems)
@@ -579,9 +570,9 @@ The goal of this system was to automatically **extract questions from educationa
 - Worksheets
 - Mock Test Papers
 
-and convert them into **structured question objects that could be stored in the database**.
+and convert them into structured question objects that could be stored in the database.
 
-Many interns had attempted solving this problem earlier, but building a **reliable production-ready solution** turned out to be quite challenging.
+Many interns had attempted solving this problem earlier, but building a reliable production-ready solution turned out to be quite challenging.
 
 
 #### Initial Experiments
@@ -595,13 +586,13 @@ DSPy allows:
 - automatic evaluation of LLM outputs
 - optimization of prompts through feedback loops
 
-While DSPy was powerful, the pipeline became **too heavy and complex** for our use case, and the task needed to be delivered quickly.
+While DSPy was powerful, the pipeline became too heavy and complex for our use case, and the task needed to be delivered quickly.
 
 So I decided to rethink the approach.
 
 #### Microservices Approach
 
-Instead of solving the entire problem at once, I broke the system into **smaller independent services**.
+Instead of solving the entire problem at once, I broke the system into smaller independent services.
 
 The pipeline was divided into stages:
 
@@ -611,7 +602,7 @@ The pipeline was divided into stages:
 4. Chunks → Question extraction
 5. Validation → Database storage
 
-Breaking the system into microservices allowed each stage to be **independently optimized and debugged**.
+Breaking the system into microservices allowed each stage to be independently optimized and debugged.
 
 
 #### Step 1: Extracting Text from Documents (OCR)
@@ -628,7 +619,7 @@ Key advantages of Mistral OCR:
 - Maintains **organic chemistry structures**
 - Outputs **Markdown formatted text**
 
-This was extremely useful because **JEE / NEET questions heavily depend on mathematical expressions**.
+This was extremely useful because JEE / NEET questions heavily depend on mathematical expressions.
 
 
 #### Example Extracted Markdown
@@ -740,7 +731,7 @@ At that time:
 - maximum **output tokens ≈ 32k**
 - maximum **input tokens ≈ 8k**
 
-So the document had to be **split into smaller chunks**.
+So the document had to be split into smaller chunks.
 
 #### The Naive Chunking Approach
 
@@ -750,7 +741,7 @@ The obvious approach would be:
 
 However, this approach quickly failed.
 
-Because the chunking was **random**, it often separated:
+Because the chunking was random, it often separated:
 
 - the **question statement**
 - the **options**
@@ -768,15 +759,15 @@ Chunk 2:
 Options A B C D
 ```
 
-In such cases, the LLM could not understand that both pieces belonged to the **same question**.
+In such cases, the LLM could not understand that both pieces belonged to the same question.
 
 This resulted in:
 - orphan questions
 - incomplete options
 - hallucinated questions
 
-For an EdTech platform, accuracy was extremely important. Coaching institutes wanted **exact question extraction**, not AI-generated approximations.
-So this approach was **not acceptable**.
+For an EdTech platform, accuracy was extremely important. Coaching institutes wanted exact question extraction, not AI-generated approximations.
+So this approach was not acceptable.
 
 #### Semantic Chunking Attempt
 
@@ -811,7 +802,7 @@ def generate_semantic_chunks(markdown_text: str):
     return chunker.split_text(markdown_text)
 ```
 
-While this approach worked well for **general text documents**, it still had problems for **exam papers**.
+While this approach worked well for general text documents, it still had problems for exam papers.
 
 #### Extraction Pipeline Overview
 
@@ -837,9 +828,9 @@ E --> F
 
 #### Step 3: LLM Extraction Layer
 
-Once the document was converted into **structured question-level chunks**, the next step was to extract questions in a **fully structured format**.
+Once the document was converted into structured question-level chunks, the next step was to extract questions in a fully structured format.
 
-Each chunk was sent to an **LLM extraction layer**, where a generalized prompt instructed the model to identify:
+Each chunk was sent to an LLM extraction layer, where a generalized prompt instructed the model to identify:
 
 - question statements
 - options
@@ -847,12 +838,12 @@ Each chunk was sent to an **LLM extraction layer**, where a generalized prompt i
 - explanations
 - associated images or diagrams
 
-The goal was to convert raw chunk text into structured **question objects** that could be stored in the database.
+The goal was to convert raw chunk text into structured question objects that could be stored in the database.
 
 
 #### Parallel Chunk Processing
 
-Since a document could contain **50–100 questions**, each chunk was processed **concurrently** to improve performance.
+Since a document could contain 50–100 questions, each chunk was processed **concurrently** to improve performance.
 
 Below is a simplified version of the extraction pipeline.
 
@@ -902,7 +893,7 @@ Key ideas in this stage:
 
 #### Schema Validation Layer
 
-To ensure the LLM output was **correct and reliable**, I used **Pydantic schemas**.
+To ensure the LLM output was correct and reliable, I used Pydantic schemas.
 
 These schemas validated:
 
@@ -937,11 +928,11 @@ class ExtractedQuestion(BaseModel):
     correct_answer: Optional[str]
     explanation: Optional[str]
 ```
-The schemas guaranteed that the LLM output always matched the **expected structure** before storing it in the database.
+The schemas guaranteed that the LLM output always matched the expected structure before storing it in the database.
 
 #### Prompt Rendering Layer
 
-Prompts were rendered dynamically using a **PromptManager**.
+Prompts were rendered dynamically using a PromptManager.
 
 ```python
 class ExtractQuestionEntityPrompt:
@@ -958,7 +949,7 @@ class ExtractQuestionEntityPrompt:
         )
 ```
 
-This made it easy to **version prompts and improve extraction quality** without changing the code.
+This made it easy to version prompts and improve extraction quality without changing the code.
 
 #### Question Extraction Pipeline
 
@@ -1042,7 +1033,7 @@ The pipeline performs the following steps:
 6. Validate structured outputs
 7. Store extracted questions in the database
 
-Because extracting questions from a large document could take **several seconds to minutes**, the extraction process was implemented using **background tasks**.
+Because extracting questions from a large document could take several seconds to minutes, the extraction process was implemented using **background tasks**.
 
 This allowed the API to return immediately while the extraction pipeline continued processing asynchronously.
 
@@ -1103,7 +1094,7 @@ def process_extract_question_entity_task(operation_id):
     save_questions_to_database(extracted_questions)
 ```
 
-This function combines the **three previously built microservices**:
+This function combines the three previously built microservices:
 
 * OCR service
 * chunking service
@@ -1163,4 +1154,748 @@ sequenceDiagram
     FastAPI-->>Client: Extraction status / results
 ```
 
+### 3. Workbook Evaluation App
 
+This project focused on building an AI-powered system that could automatically evaluate student workbook answers. The application was designed primarily for teachers, tutors, and coaching institutes. Teachers could upload scanned copies of student workbooks, and the system would analyze the answers, evaluate them according to the CBSE marking scheme, and provide feedback to students.
+
+The main objective was to build a solution for Class 6–10 students covering subjects such as **Science, Mathematics, and English**. The evaluation system aimed to reduce the manual grading workload for teachers while also giving students clear feedback to improve their learning.
+
+Initially, the idea looked promising, but the implementation approach was not clear. During the early second week of June, a meeting was held with Abhishek Kumar, Avinash Kumar, Rahul (frontend intern), and myself to discuss how the system could be implemented. My responsibility was to design and build the backend AI evaluation service, while the frontend integration and application interface were handled by Abhishek and Rahul.
+
+#### System Design Overview
+
+The core workflow involved converting scanned workbook pages into structured information and then using AI models to evaluate the answers.
+
+```mermaid
+flowchart LR
+A[Student Workbook Image] --> B[OCR Processing]
+B --> C[Text + Word Coordinates]
+C --> D[LLM Evaluation using Marking Scheme]
+D --> E[Annotation Generation]
+E --> F[Bounding Box Mapping]
+F --> G[Highlighted Feedback on Workbook]
+```
+
+The pipeline performs the following major tasks:
+
+* Convert scanned workbook images into text using OCR.
+* Extract word-level coordinates to identify exact positions in the document.
+* Use an LLM to analyze answers according to a predefined marking scheme.
+* Map LLM feedback back to the workbook image using bounding boxes.
+* Display visual annotations such as underlines or highlights for incorrect answers.
+
+#### OCR and Text Extraction
+
+One of the first challenges was converting workbook images into machine-readable text while also preserving the coordinates of each word.
+
+Initially, I experimented with **Mistral OCR**, which produced good text results but did not provide bounding box information required for drawing annotations.
+
+The final approach used **Google Cloud Vision**, which provided both:
+
+* extracted text
+* bounding box coordinates for each detected word
+
+A simplified implementation is shown below.
+
+```python
+from google.cloud import vision
+
+def get_words(image):
+    client = vision.ImageAnnotatorClient()
+    response = client.text_detection(image=image)
+
+    words = []
+    for text in response.text_annotations[1:]:
+        vertices = text.bounding_poly.vertices
+        words.append({
+            "word": text.description,
+            "x1": vertices[3].x,
+            "y1": vertices[3].y,
+            "x2": vertices[2].x,
+            "y2": vertices[2].y
+        })
+
+    return words
+```
+
+This step allowed the system to later draw annotations directly on the workbook image.
+
+
+#### LLM-based Answer Evaluation
+
+Once the workbook text was extracted, the next step was to evaluate answers using an LLM with a predefined marking scheme.
+
+The LLM receives:
+
+* workbook image
+* marking scheme
+* evaluation instructions
+
+The model then returns structured annotations describing mistakes or feedback.
+
+Example simplified function:
+
+```python
+def get_annotations_from_llm(image_url, marking_scheme):
+    response = gemini.generate(
+        image=image_url,
+        prompt="Evaluate student answer using marking scheme",
+        schema=LlmAnnotationList
+    )
+    
+    return response
+```
+
+The output includes information such as:
+
+* question label
+* severity of issue
+* category of error
+* phrase triggering the annotation
+* feedback description
+
+
+#### LCS-based Phrase Matching with SequenceMatcher
+
+When the LLM evaluates an answer, it returns a phrase that triggered the annotation.  
+However, OCR output is often noisy — words may be slightly misspelled or split incorrectly.  
+Because of this, an exact string match is unreliable.
+
+To solve this, a Longest Common Subsequence (LCS) based fuzzy matching approach was used along with Python's `SequenceMatcher`.
+
+This method allows the system to:
+- tolerate small OCR mistakes
+- find approximate matches between the LLM phrase and OCR words
+- correctly locate the **bounding box coordinates** of the phrase in the original document
+
+#### Why SequenceMatcher was Used
+
+`SequenceMatcher` computes a similarity ratio between two strings.  
+This helps determine whether two words are likely to represent the same word even if OCR introduced small errors.
+
+Example:
+student_answer → student_answr
+similarity ≈ 0.92
+
+Because the similarity score is high, the system treats the words as a match.
+
+This approach improves robustness when working with:
+- scanned worksheets
+- handwritten or low-quality scans
+- OCR misread characters
+
+#### Character Similarity Function
+
+A simple similarity function was implemented using `SequenceMatcher`.
+
+```python
+from difflib import SequenceMatcher
+
+def char_similarity(a: str, b: str) -> float:
+    """
+    Computes similarity between two words.
+    Returns a score between 0 and 1.
+    """
+    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+```
+
+Example usage:
+
+```python
+print(char_similarity("answer", "answr"))   # ~0.83
+```
+
+#### LCS Phrase Matching Algorithm
+
+The system then applies a **Longest Common Subsequence (LCS)** strategy to match a multi-word phrase against OCR words.
+
+Simplified implementation:
+
+```python
+from difflib import SequenceMatcher
+
+def fuzzy_lcs_match(words, phrase, char_threshold=0.7):
+    """
+    Finds approximate phrase matches using LCS + SequenceMatcher.
+    """
+
+    phrase_words = phrase.split()
+    n = len(words)
+    m = len(phrase_words)
+
+    dp = [[0]*(m+1) for _ in range(n+1)]
+
+    for i in range(n):
+        for j in range(m):
+            sim = SequenceMatcher(
+                None,
+                words[i].lower(),
+                phrase_words[j].lower()
+            ).ratio()
+
+            if sim >= char_threshold:
+                dp[i+1][j+1] = dp[i][j] + 1
+            else:
+                dp[i+1][j+1] = max(dp[i][j+1], dp[i+1][j])
+
+    return dp[n][m]
+```
+
+The function computes the length of the longest matching subsequence between the OCR words and the phrase returned by the LLM.
+
+#### Matching Strategy
+
+The algorithm works in two stages:
+
+1. **Word similarity check**
+   * Compare OCR word with phrase word
+   * Use `SequenceMatcher` similarity ratio
+
+2. **LCS dynamic programming**
+   * Track the longest sequence of matching words
+   * Determine whether the phrase sufficiently matches the document
+
+#### Annotation Generation
+
+Once matching words are found, the system generates line coordinates that can be drawn on the workbook image.
+
+```python
+annotation_line = {
+    "start_x": word_start_x,
+    "start_y": word_start_y,
+    "end_x": word_end_x,
+    "end_y": word_end_y
+}
+```
+
+These coordinates allow the frontend to display:
+
+* underlines
+* highlights
+* error markers
+
+directly on the student workbook image.
+
+#### Evaluation Pipeline
+
+The full evaluation pipeline combines OCR processing and LLM analysis in parallel.
+
+```python
+def evaluate_assessment(image_url, marking_scheme):
+    llm_annotations = get_annotations_from_llm(image_url, marking_scheme)
+    words = get_words(image_url)
+
+    final_annotations = merge_annotations(llm_annotations, words)
+
+    return final_annotations
+```
+
+This produces a structured list of annotations that the frontend can render visually.
+
+#### Annotation Data Model
+
+The system uses structured schemas to represent annotations generated during evaluation.
+
+```mermaid
+classDiagram
+
+class AnnotationLine {
+start_x
+start_y
+end_x
+end_y
+}
+
+class Annotation {
+label
+severity
+category
+description
+lines
+}
+
+class AnnotationList {
+annotations
+}
+
+class LlmAnnotation {
+label
+severity
+category
+description
+phrase
+}
+
+class LlmAnnotationList {
+annotations
+}
+
+AnnotationList --> Annotation
+Annotation --> AnnotationLine
+LlmAnnotationList --> LlmAnnotation
+```
+
+#### Marking Scheme Generation
+
+The second major component of the system was generating a marking scheme automatically from a question paper.  
+If a teacher uploads a CBSE question paper (for example Class 10 Mathematics or Science), the system uses an LLM to generate a structured marking scheme that can later be used to evaluate student answers.
+
+This task was comparatively simpler because it followed a pattern similar to the similar question generation pipeline built in the first project. The main idea was to send the question paper images to the LLM along with a carefully designed prompt and receive a structured marking scheme.
+
+The marking scheme contains:
+
+- expected answers for each question  
+- marks breakdown for step-wise grading  
+- keywords that should appear in a correct answer  
+- common errors students typically make  
+
+
+#### Marking Scheme Data Structure
+
+The marking scheme was represented using structured Pydantic models to ensure consistency.
+
+```mermaid
+classDiagram
+class MarkingScheme {
+expected_answers
+marks_breakdown
+keywords
+common_errors
+}
+
+class MarkingSchemeItem {
+label
+question
+marks
+marking_scheme
+}
+
+class MarkingSchemeList {
+items
+}
+
+MarkingSchemeList --> MarkingSchemeItem
+MarkingSchemeItem --> MarkingScheme
+````
+
+Each item corresponds to one question (for example **Q1, Q2, Q3**) and contains the complete evaluation criteria.
+
+
+#### Marking Scheme Generation Logic
+
+The workflow for generating the marking scheme was straightforward:
+
+1. Teacher uploads question paper images.
+2. Images are sent to Gemini along with a prompt.
+3. The model generates a structured marking scheme.
+4. The response is validated using the Pydantic schema.
+
+Simplified implementation:
+
+```python
+from google import genai
+from typing import List
+
+def generate_marking_scheme(subject: str, image_urls: List[str]):
+    client = genai.Client(api_key=GEMINI_API_KEY)
+
+    prompt = GenerateMarkingSchemePrompt.render(subject)
+
+    uploaded_images = [
+        client.files.upload(file=download_image(url).name)
+        for url in image_urls
+    ]
+
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[prompt, *uploaded_images],
+        response_schema=MarkingSchemeList
+    )
+
+    return MarkingSchemeList.model_validate_json(response.text)
+```
+
+#### Prompt Rendering
+
+A prompt template was used to instruct the LLM to generate marking schemes in a consistent format.
+
+```python
+class GenerateMarkingSchemePrompt:
+
+    @staticmethod
+    def render(subject: str):
+        return PromptManager.render(
+            "generate_marking_scheme",
+            version="202506062150",
+            subject=subject
+        )
+```
+
+The prompt instructs the model to:
+
+* analyze the question paper
+* identify each question label
+* generate marking criteria based on CBSE standards
+
+
+#### Complete System Architecture
+
+The Workbook Evaluation system eventually consisted of **two main API endpoints**.
+
+1. **Marking Scheme Generation API**
+2. **Workbook Evaluation API**
+
+The first endpoint generates a marking scheme from the question paper.
+The second endpoint evaluates student answers using OCR, LLM reasoning, and fuzzy phrase matching.
+
+#### System Sequence Diagram
+
+```mermaid
+sequenceDiagram
+
+participant Teacher
+participant MobileApp
+participant BackendAPI
+participant CloudVision
+participant GeminiLLM
+
+Teacher->>MobileApp: Upload Question Paper
+MobileApp->>BackendAPI: POST /generate-marking-scheme
+
+BackendAPI->>GeminiLLM: Send question paper images + prompt
+GeminiLLM-->>BackendAPI: Structured marking scheme
+
+BackendAPI-->>MobileApp: Return marking scheme
+
+Teacher->>MobileApp: Upload student workbook
+MobileApp->>BackendAPI: POST /evaluate-workbook
+
+BackendAPI->>CloudVision: OCR + word bounding boxes
+CloudVision-->>BackendAPI: Text + coordinates
+
+BackendAPI->>GeminiLLM: Evaluate answers using marking scheme
+GeminiLLM-->>BackendAPI: Annotation phrases
+
+BackendAPI->>BackendAPI: LCS + SequenceMatcher phrase matching
+
+BackendAPI-->>MobileApp: Annotated workbook + feedback
+```
+
+
+## Tech Stack & Workflow
+
+During my internship at Kalppo, my development workflow was broadly divided into two stages:
+
+1. AI experimentation and prompt engineering
+2. production-ready backend development
+
+This separation helped me quickly test ideas and then convert them into clean, maintainable backend services.
+
+#### AI Experimentation Workflow
+
+For most AI-related tasks, I first experimented in **Jupyter notebooks** before moving the implementation into production code. This allowed me to rapidly test prompts, evaluate model responses, and analyze outputs.
+
+The typical experimentation workflow included:
+
+- designing and testing prompts
+- evaluating LLM outputs
+- iterating on prompt structure
+- testing OCR pipelines
+- validating schema outputs
+- plotting or inspecting results
+
+A lightweight folder structure was used for experimentation projects.
+
+```
+project/
+├── prompts/
+│   └── prompt templates
+├── src/
+│   └── experimental python scripts
+├── schema/
+│   └── initial pydantic schemas
+├── data/
+│   └── input datasets or test files
+├── nbks/
+│   └── jupyter notebooks
+├── outputs/
+│   └── generated json outputs
+└── requirements.txt
+```
+
+This structure allowed me to iterate quickly while keeping experiments organized.
+
+Once I had a reliable approach, I moved the implementation into the production AI service.
+
+#### Production Backend Workflow
+
+At Kalppo, the backend architecture was split into two major parts:
+
+- **Django backend** – used for the main platform and application logic
+- **FastAPI AI service** – used for AI pipelines and model-driven APIs
+
+My work was mainly focused on the **FastAPI AI service**, where I built APIs for:
+
+- similar question generation
+- question extraction pipelines
+- workbook evaluation
+
+The production code followed a clean modular structure.
+
+```
+AI/
+│
+├── app/
+│   ├── core/        # configuration, api keys, logging
+│   ├── db/          # database models and access
+│   ├── lib/         # shared libraries
+│   ├── prompts/     # prompt templates
+│   ├── routes/      # FastAPI endpoints
+│   ├── schema/      # pydantic schemas
+│   ├── storage/     # storage integrations
+│   ├── utils/       # helper utilities
+│   │
+│   ├── deps.py
+│   ├── main.py
+│   └── sentry.py
+│
+├── scripts/         # utility scripts
+├── probes/          # health probes
+│
+├── Dockerfile
+├── requirements.txt
+└── pytest.ini
+```
+
+This structure helped maintain a **clean separation of concerns** between API routes, business logic, schemas, and utilities.
+
+#### Technologies Used
+
+Throughout the internship, I worked with a wide range of technologies across AI, backend systems, and cloud services.
+
+**Programming & Backend**
+- Python 3.11
+- FastAPI
+- Django
+- SQLAlchemy
+
+**AI & LLM Frameworks**
+- Gemini API
+- OpenAI API
+- LangChain
+- LangGraph
+
+**Data Validation**
+- Pydantic
+
+**OCR & Document Processing**
+- Google Cloud Vision API
+- Mistral OCR
+
+**Vector Search**
+- pgvector
+
+**Databases**
+- PostgreSQL
+- Supabase (Postgres hosting)
+
+**Prompt Engineering**
+- Jinja-based prompt templates
+
+**Development Tools**
+- Jupyter Notebook
+- Docker
+- Docker Compose
+- pytest
+
+**Other Tools**
+- LaTeX (for question rendering)
+- concurrent.futures for parallel processing
+
+#### Development Process
+
+Our typical development process looked like this:
+
+1. Experiment with ideas in **Jupyter notebooks**
+2. Validate prompts and outputs
+3. Design **Pydantic schemas** for structured responses
+4. Convert experimental code into **FastAPI services**
+5. Create API endpoints for integration with the main platform
+6. Containerize services using **Docker**
+
+
+## Challenges I Faced
+
+The entire journey at Kalppo was a rollercoaster of learning and problem-solving. Almost every week brought a new challenge, whether it was understanding the system architecture, adapting to a fast-paced development workflow, or implementing production-grade AI services.
+
+During the first week, one of my biggest challenges was understanding the company's codebase and overall system architecture. I had to familiarize myself with the AI service repository, backend structure, and the workflow used by the team. In the early days, Abhishek and I used to have daily one-on-one sessions for about 30 minutes where we discussed what I had implemented that day and what the next goals were. These sessions helped me understand the roadmap for each project.
+
+Typically, our workflow followed this pattern:
+
+1. Start with experimentation using Jupyter notebooks.
+2. Validate prompts, schemas, and AI outputs.
+3. Implement the backend AI service logic.
+4. Deploy the service to Google Cloud.
+5. Integrate the APIs with the frontend so that teachers and students could use the system.
+
+Below are some of the major challenges I faced during the internship.
+#### Understanding the Workflow and Development Pace
+
+In the beginning, the pace at which the team developed software felt overwhelming. I was using tools like ChatGPT, Claude, GitHub Copilot, and other AI coding assistants, which often generated a lot of code quickly. However, debugging that generated code was extremely difficult because I did not always fully understand what was happening internally.
+
+Sometimes it would take hours just to debug a small issue. Initially, I struggled with adapting to this new style of development where AI tools were heavily used during coding and experimentation.
+
+It took me around two weeks to fully understand the workflow, how to effectively use these tools, and how to structure my experimentation. After that, I was able to work much more smoothly and contribute effectively to the projects.
+
+
+#### Moving from Experimentation to Production Backend Development
+
+After experimentation produced good results, the next challenge was converting that work into production-ready backend services.
+
+This was a completely new experience for me because it required understanding the entire software engineering lifecycle, including API design, database integration, deployment, and service architecture.
+
+Abhishek helped a lot during this phase by sharing articles and resources about proper backend development practices. Based on his suggestion, I used:
+
+- FastAPI for the AI service
+- PostgreSQL for the database
+- Google Cloud Vision for OCR
+- Docker for containerization and deployment
+
+Docker was especially new to me. I had no prior experience with it, so understanding how containers work and how they are used for deployment took a significant amount of time and experimentation.
+
+#### Learning GitHub Workflow and Writing Good Pull Requests
+
+Another important challenge was learning how to properly contribute using GitHub workflows and pull requests.
+
+While developing the backend AI services, I had to:
+
+- document implementation details
+- explain design decisions
+- write clear pull request descriptions
+- maintain readable and structured code
+
+Every pull request required a detailed explanation of:
+
+- what changes were made
+- why those changes were necessary
+- how the implementation works
+
+Initially this felt difficult, but over time I learned how to write clean code, meaningful comments, and well-structured pull request descriptions, which made collaboration with reviewers much easier.
+
+#### Context Switching Between Multiple Projects
+
+Working in a startup environment also meant frequently switching between different projects.
+
+For example:
+
+- One hour I would be working on the AI Question Extraction pipeline
+- The next hour I might need to fix bugs in the Similar Question Generation service
+- Later I would return to the Workbook Evaluation system to implement a new feature
+
+This constant **context switching** was difficult at first because it required quickly shifting focus between different systems and problem domains. However, after some time I adapted to this workflow and was able to manage multiple projects simultaneously.
+
+
+#### Writing Unit Tests for AI Services
+
+Testing was another area where I initially struggled. I had limited experience writing **unit tests**, especially for AI-driven services.
+
+Since the AI pipelines involved multiple components such as:
+
+- LLM responses
+- OCR outputs
+- schema validation
+- annotation generation
+
+writing reliable tests was challenging.
+
+Over time, I learned how to use mocking and structured test cases to validate different components of the AI service. Eventually, I was able to write effective unit tests and integration tests for the backend APIs.
+
+
+## Key Learnings
+
+The internship at Kalppo was an incredible learning experience that taught me a wide range of skills across AI, backend development, and software engineering. Some of the key learnings from this journey include:
+
+1. **AI Experimentation**: I learned how to design effective prompts, evaluate LLM outputs, and iterate on prompt engineering to achieve desired results.
+
+2. **Backend Development**: I gained hands-on experience building production-grade backend services using FastAPI, integrating with databases, and deploying using Docker.
+
+3. **Software Engineering Practices**: I learned how to write clean, maintainable code, structure projects effectively, and collaborate using GitHub workflows and pull requests.
+
+4. **Working with AI APIs**: I became proficient in using the Gemini API, OpenAI API, and Google Cloud Vision for various AI tasks such as content generation and OCR.
+
+5. **Data Validation with Pydantic**: I learned how to use Pydantic schemas to validate and structure AI outputs, ensuring reliability and consistency in the data.
+
+6. **Handling OCR Challenges**: I gained experience working with OCR outputs, dealing with noisy text, and implementing fuzzy matching techniques to map LLM feedback back to document coordinates.
+
+7. **Context Switching**: I developed the ability to manage multiple projects simultaneously and quickly switch between different problem domains.
+
+8. **Communication and Collaboration**: I improved my ability to communicate technical details effectively through pull request descriptions, code comments, and documentation.
+
+9. **Testing AI Services**: I learned how to write unit tests and integration tests for complex AI-driven services, using mocking to simulate different components.
+
+
+## Final Thoughts
+
+I am not entirely sure where to start, because in the previous sections I have already shared most of my journey from the first day to the last day of my internship at Kalppo. In this final section, I want to talk about my mentors and how they helped shape my experience during the internship.
+
+
+I would first like to thank Abhishek Kumar, CTO at Kalppo, for being an amazing mentor and guide throughout this journey. He played a huge role in shaping how I approach both technical problems and professional communication.
+
+One incident during my internship stands out as an important learning moment for me.
+
+During the third week of my internship, I was working heavily with GitHub pull requests. At that time, the entire Git and GitHub workflow felt very overwhelming to me. I had to ensure that every small detail in the code was correct before requesting a review.
+
+One day, I was extremely frustrated after working on a pull request for a long time. Without thinking much, I sent a message asking him to review it. The exact message I wrote was:
+
+> **"Review the PR request!"**
+
+At that moment I genuinely meant it, but looking back it was clearly not the right way to ask for a review. Shortly after that message, Abhishek replied with an article about the importance of using **"please"** when asking seniors or mentors for help.
+
+That message made me pause for a few minutes. I immediately realized that the issue was not technical but rather about communication and professionalism. I could have simply written:
+
+> *"Could you please review the PR and suggest changes if any?"*
+
+Later in our meeting, I apologized for the message and acknowledged that it was a mistake on my part. That small incident became a very important lesson for me. I realized that even if someone has strong technical skills, communication plays an equally important role in professional environments.
+
+From that point onward, I became much more mindful about how I communicate with teammates and mentors.
+
+Apart from that, Abhishek was extremely helpful in guiding my technical growth as well. Whenever I thought I had come up with a clever solution, he often had an even better or more elegant approach to the problem. Instead of directly giving answers, he would ask questions like:
+
+- *Why are you doing it this way?*  
+- *What problem does this approach solve?*  
+- *Is there a simpler way to implement this?*
+
+These questions pushed me to think more deeply about the problems I was solving. They helped me develop stronger problem-solving and system design thinking.
+
+Toward the end of my internship, Abhishek wrote a recommendation letter for me. Some of his words meant a lot to me:
+
+> “Saket grew a lot in his time working with us. He is highly receptive to feedback, and improved week after week. He presented his work in frequent demos to the team, and his explanations (and overall communication) were clear. While working on more challenging tasks, he scoped the problem into smaller tasks and worked on them until he succeeded. He was proactive with planning, and even shared his suggestions on how the product should behave.  
+>  
+> I would absolutely love to work with him again. He is an engineer with abilities beyond his age and title, and the drive to get even better. I believe Saket would thrive in a research-driven graduate program, especially one that values applied problem-solving and independent thinking. He’s ready for the next step.”
+
+— Abhishek Kumar, CTO at Kalppo
+  
+[Read the full recommendation letter](https://drive.google.com/file/d/1HVAbZkn75hlsDeQqB02dpP5VvlBnSIjJ/view?usp=sharing)
+
+I am truly grateful to Abhishek for being such a supportive mentor and for constantly pushing me to improve both technically and professionally.
+
+
+I would also like to thank Avinash Kumar, CEO at Kalppo.
+
+During the internship itself, I did not interact with him as frequently as I did with the engineering team. The main interactions I remember were during my onboarding and later during discussions related to the AI Workbook Evaluation project.
+
+However, after the internship ended, I had the opportunity to speak with him during my 5th semester at NITK. We ended up having a long conversation, almost two to three hours, where we discussed the projects I had worked on, future career paths, the state of the software industry, and many other topics.
+
+During that conversation, he gave me a very simple but powerful suggestion:
+
+Why not document all the work you have done at Kalppo? It will help you in the future.
+
+That idea stayed with me. I realized that documenting the journey would not only help me reflect on my own learning but could also help others who want to understand how real-world AI systems are built.
+
+This blog post exists largely because of that suggestion.
+
+I am really thankful to Avinash for that advice and for being such a thoughtful leader. His suggestion encouraged me to document everything I learned during the internship.
+
+Looking back, my time at Kalppo was not just about building projects. It was about learning how to think like an engineer, how to communicate effectively, and how to approach real-world problems with curiosity and persistence.
+
+I will always be grateful for the mentorship, opportunities, and lessons that I received during this journey.

@@ -42,11 +42,11 @@ One of the highlights discussed during the interview was my result in the **Kagg
 
 The interview was quite technical but also very interesting because it focused on how I approached problems and built systems, rather than just theoretical questions.
 
-About two days later, I received a call from [Avinash Kumar](https://www.linkedin.com/in/avinash136/) from the HR team at Kalppo. We discussed the role, expectations, and a few details about the internship.
+About two days later, I received a call from [Avinash Kumar](https://www.linkedin.com/in/avinash136/), CEO at Kalppo. We discussed the role, expectations, and a few details about the internship.
 
 The very next day, I received the confirmation 🙂
 
-My internship at **Kalppo** officially started on **May 10th** and continued until **July 20th**.
+My internship at **Kalppo** officially started on May 10th and continued until July 20th.
 
 Those two months turned out to be one of the most challenging, interesting, and enjoyable experiences I had during my early years in tech. It was my first time working professionally as an AI Engineer Intern, and doing it in a fast-moving EdTech startup environment made the experience even more intense and exciting.
 
@@ -65,7 +65,7 @@ The product was designed to help coaching institutes:
 * conduct mock quizzes and tests
 * manage learning material and progress tracking
 
-The primary focus was on **JEE and NEET coaching**, which makes sense because many coaching institutes in India operate offline on a relatively small scale. The idea was simple but powerful provide them with tools to run their coaching programs online for their students.
+The primary focus was on JEE and NEET coaching, which makes sense because many coaching institutes in India operate offline on a relatively small scale. The idea was simple but powerful provide them with tools to run their coaching programs online for their students.
 
 Apart from this core product, the team was also working on several other supporting tools and features that could improve the learning experience for both teachers and students.
 
@@ -77,7 +77,7 @@ Overall, it was a great experience meeting the team and mentors. The session hel
 
 ## Projects I Worked On
 
-During my internship at Kalppo, I worked on multiple AI-driven systems aimed at improving automation within the EdTech platform. The primary focus of these projects was to automate question generation, question extraction from educational documents**, and student answer evaluation. These systems helped reduce manual effort for educators while enabling scalable content creation and assessment.
+During my internship at Kalppo, I worked on multiple AI-driven systems aimed at improving automation within the EdTech platform. The primary focus of these projects was to automate question generation, question extraction from educational documents, and student answer evaluation. These systems helped reduce manual effort for educators while enabling scalable content creation and assessment.
 
 > STEM Question Generation
 - Built a system to automatically generate **similar STEM questions** from an existing question.
@@ -91,9 +91,9 @@ During my internship at Kalppo, I worked on multiple AI-driven systems aimed at 
 
 ### 1. STEM Question Generation
 
-After our initial onboarding meeting, the following Monday I had a **one-on-one discussion with Abhishek Kumar (CTO)** regarding my experience with AI frameworks and the projects I had previously worked on.
+After our initial onboarding meeting, the following Monday I had a one-on-one discussion with Abhishek Kumar (CTO) regarding my experience with AI frameworks and the projects I had previously worked on.
 
-Based on this discussion, the **first major task assigned to me** was to build a system that could generate **k similar questions** for a given input question.
+Based on this discussion, the first major task assigned to me was to build a system that could generate k similar questions for a given input question.
 
 The idea was simple:
 
@@ -102,12 +102,12 @@ The idea was simple:
 - Store them in the database
 - Expand the **practice question bank** for coaching institutes
 
-This helps students practice more problems that test the **same concept with slightly different variations**.
+This helps students practice more problems that test the same concept with slightly different variations.
 
 
 #### Experimenting with AI Workflows
 
-I started experimenting with different **AI workflows inside Jupyter notebooks**.
+I started experimenting with different AI workflows inside Jupyter notebooks.
 
 The basic pipeline looked like this:
 
@@ -221,11 +221,11 @@ For the generation pipeline I used:
 
 These models worked well for generating conceptually similar but diverse questions.
 
-I used the **Gemini Python API** together with **Pydantic schemas** to validate responses.
+I used the Gemini Python API together with **Pydantic schemas** to validate responses.
 
 #### Question Schema
 
-The generated questions were validated using a **Pydantic schema**.
+The generated questions were validated using a Pydantic schema.
 
 ```mermaid
 classDiagram
@@ -270,7 +270,7 @@ SimilarQuestion "1" --> "*" GeminiSafeImage : includes
 GenerateSimilarQuestionResponse "1" --> "*" SimilarQuestion : returns
 ```
 
-This ensured that the LLM output always followed the **correct structured format**.
+This ensured that the LLM output always followed the correct structured format.
 
 
 #### Backend API
@@ -360,9 +360,6 @@ These diagrams were rendered into images and attached to questions.
 <div class="caption">
 Example circuit diagram generated using LaTeX CircuitTikZ and rendered into an image by the pipeline.
 </div>
-
-
----
 
 #### Example Result: Generated Question Variations
 
@@ -607,17 +604,17 @@ Breaking the system into microservices allowed each stage to be independently op
 
 #### Step 1: Extracting Text from Documents (OCR)
 
-The first major problem was converting the uploaded **PDF or image documents into textual data**.
+The first major problem was converting the uploaded PDF or image documents into textual data.
 
 For this, I used **Mistral OCR**, which at the time was one of the best OCR systems available.
 
 Key advantages of Mistral OCR:
 
-- Maintains **mathematical formulas in LaTeX**
-- Preserves **tables and MCQ formatting**
-- Extracts **diagrams and images**
-- Maintains **organic chemistry structures**
-- Outputs **Markdown formatted text**
+- Maintains mathematical formulas in LaTeX
+- Preserves tables and MCQ formatting
+- Extracts diagrams and images
+- Maintains organic chemistry structures
+- Outputs Markdown formatted text
 
 This was extremely useful because JEE / NEET questions heavily depend on mathematical expressions.
 

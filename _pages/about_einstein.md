@@ -1,6 +1,19 @@
+*Hola amigo!*
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](https://www.reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+This is Saket. I am currently studying at the National Institute of Technology Karnataka (NITK), Mangalore, India. I was born and brought up in Mumbai, Maharashtra, where I spent most of my early years.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+I am deeply interested in AI & Maths. I enjoy exploring how AI can be used to solve real-world problems, especially in areas like education technology, automation, and large language model applications. I like experimenting with new ideas, building projects, and documenting my learning along the way.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+Outside of academics and engineering, I have a wide range of interests.
+
+In sports, I enjoy watching Cricket, Football, Tennis & Esports.  
+
+I also enjoy playing video games, especially PC games such as horror, adventure, and story-driven games. Some of my favorite gaming experiences come from immersive single-player games with strong storytelling.
+
+Another hobby I really enjoy is writing about my experiences and projects. I regularly document what I learn while building systems or working on new ideas.
+
+- **[Blogs](blog/)** 
+- **[Projects](projects/)**
+- **[Work Experience](experience/kalppo/)**
+
+Apart from tech and gaming, I also enjoy listening to music, which is probably the one thing I enjoy the most during long coding sessions or while relaxing after a busy day.

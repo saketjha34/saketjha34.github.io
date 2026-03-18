@@ -4,7 +4,6 @@ title: Internship Experience at Kalppo!
 permalink: /experience/kalppo/
 nav: false
 date: 03-12-2025 23:00:00
-collection: books
 toc:
   sidebar: left
 mermaid:
@@ -38,7 +37,7 @@ We discussed things like:
 - The ML systems I had built  
 - My experience participating in Kaggle competitions  
 
-One of the highlights discussed during the interview was my result in the **Kaggle × Skill Assessment Machine Learning Competition**, where I was ranked **1st out of 1,846 participants**.
+One of the highlights discussed during the interview was my result in the Kaggle × Skill Assessment Machine Learning Competition, where I was ranked 1st out of 1,846 participants.
 
 The interview was quite technical but also very interesting because it focused on how I approached problems and built systems, rather than just theoretical questions.
 
@@ -73,7 +72,7 @@ After the introduction and product demo, we had a fun activity to break the ice.
 
 It was a simple but very engaging activity and helped everyone get comfortable with each other. Since many of us were meeting for the first time, it made the environment much more relaxed.
 
-Overall, it was a great experience meeting the team and mentors. The session helped us understand the **vision behind the startup**, the product they were building, and the people we would be working with over the next few months.
+Overall, it was a great experience meeting the team and mentors. The session helped us understand the vision behind the startup, the product they were building, and the people we would be working with over the next few months.
 
 ## Projects I Worked On
 
@@ -98,9 +97,9 @@ Based on this discussion, the first major task assigned to me was to build a sys
 The idea was simple:
 
 - Take an existing JEE-level question
-- Generate **multiple variations of the same concept**
+- Generate multiple variations of the same concept
 - Store them in the database
-- Expand the **practice question bank** for coaching institutes
+- Expand the practice question bank for coaching institutes
 
 This helps students practice more problems that test the same concept with slightly different variations.
 

@@ -66,21 +66,32 @@ ninja.data = [{
             window.location.href = "/blog/2025/fastapi-postgresql/";
           
         },
+      },{id: "post-winning-kaggle-competition-is-a-piece-of-cake",
+        
+          title: "Winning Kaggle Competition is a Piece of Cake!",
+        
+        description: "This post is about how I won the KaggleX Skill Assessment Machine Learning Competition. Disclaimer I was just a beginner in machine learning and Kaggle competitions when I started. This competition ran for about 20 days, and I improved day by day and climbed up the leaderboard. Initially, I was ranked around 368-ish on the private leaderboard, but when the competition ended, the tables turned and I was Rank 1.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/kaggle-x-skill-assesment/";
+          
+        },
       },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-winning-kaggle-competition-is-a-piece-of-cake",
-          title: 'Winning Kaggle Competition is a Piece of Cake!',
+            },},{id: "news-winner-kaggle-x-skill-assessment-machine-learning-competition-rank-1-1846",
+          title: 'Winner, Kaggle x Skill Assessment Machine Learning Competition – Rank 1/1846',
           description: "",
           section: "News",handler: () => {
-              window.location.href = "/kaggle-skill-assessment-ml-competition/";
+              window.location.href = "/news/kaggle-skill-assessment-ml-competition/";
             },},{id: "news-completed-my-ai-engineer-internship-at-kalppo",
           title: 'Completed My AI Engineer Internship at Kalppo!',
           description: "",
           section: "News",handler: () => {
-              window.location.href = "/kalppo-internship/";
+              window.location.href = "/news/kalppo-internship/";
             },},{id: "projects-paragon-parallel-graph-engine",
           title: 'PARAGON – Parallel Graph Engine',
           description: "A high-performance C++ parallel graph processing engine for large-scale graph analytics",

@@ -65,6 +65,9 @@ Where:
 For me, it turned out to be a really good learning experience and eventually, a winning one
 
 Here are my final scores and results from the competition:
+
+* [GitHub Repository (Full Code & Solution)](https://github.com/saketjha34/KaggleX-Skill-Assessment-ML-Competition-top-1-Solution)
+
 <div>
   <img src="/assets/img/kaggle-competition/leaderboard.png" width="100%">
 </div>
@@ -657,3 +660,31 @@ I just:
 * Kept experimenting
 * Learned from mistakes
 * Improved step by step
+
+
+
+## References
+
+Here are some resources that helped me during the competition:
+
+* [Andrew Ng’s Machine Learning Course (Coursera)](https://www.coursera.org/learn/machine-learning)
+
+* [StatQuest by Josh Starmer (YouTube)](https://www.youtube.com/@statquest)
+
+* [3Blue1Brown (Math intuition)](https://www.youtube.com/@3blue1brown)
+
+* [Scikit-learn Documentation (Preprocessing, Models, Metrics)](https://scikit-learn.org/stable/)
+
+* [Optuna Documentation (Hyperparameter tuning)](https://optuna.org/)
+
+* [CatBoost Documentation](https://catboost.ai/)
+
+* [XGBoost Documentation](https://xgboost.readthedocs.io/)
+
+* [LightGBM Documentation](https://lightgbm.readthedocs.io/)
+
+* [Kaggle Learn (Courses & Tutorials)](https://www.kaggle.com/learn)
+
+* Kaggle Discussion Forums *(very useful for ideas and approaches)*
+
+* [GitHub Repository (Full Code & Solution)](https://github.com/saketjha34/KaggleX-Skill-Assessment-ML-Competition-top-1-Solution)

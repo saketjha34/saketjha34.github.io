@@ -26,7 +26,7 @@ cv:
     Education:
       - institution: National Institute of Technology Karnataka, Surathkal
         location: Karnataka, India
-        url: https://www.nitk.ac.in/
+        # url: https://www.nitk.ac.in/
         area: Civil Engineering, Minor in Information Technology
         studyType: B.Tech
         start_date: 2023
@@ -170,24 +170,28 @@ cv:
         icon: fa-solid fa-gamepad
         keywords: "BGMI, Valorant, Clash of Clans, Call of Duty, PC Games, Horror Games, Mystery Games, Puzzle Games, Story-driven Games"
 
-    # Certificates:
-    #   - name: Machine Learning
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-location-dot
+    Certificates:
+      - name: Deep Learning
+        url: https://moonshot.scaler.com/s/sl/owNl81dYqm?_gl=1*dtco1j*_ga*ODQ5Njk2Nzk0LjE3MTY0NTYxMzk.*_ga_53S71ZZG1X*MTcxNjQ2NDkzOC4yLjEuMTcxNjQ2NTI0MC4wLjAuNjg0Njg5OTU4
+        date: 2024-03-20
+        issuer: Scaler
+        icon: fa-solid fa-location-dot
 
-    #   - name: Quantum Computing
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-tag
+      - name: Cloud Computing
+        url: https://drive.google.com/file/d/1y14f_-wIHMxdEDtQDWOiD3KqPssNRUK2/
+        date: 2025-10-01
+        issuer: IIT Kharagpur
+        icon: fa-solid fa-location-dot
 
-    #   - name: Quantum Information
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-envelope
+      - name: Social Networks
+        url: https://drive.google.com/file/d/1oOGx4xO-RP636R3FNBA9db98Z6gp8evP/
+        date: 2026-04-30
+        issuer: IIT Madras
+        icon: fa-solid fa-tag
 
     Projects:
       - name: FileForge
+        url: https://github.com/saketjha34/FileForge
         summary: A distributed file storage system enabling secure file and folder management with scalable backend architecture.
         highlights:
           - Built a distributed file storage system supporting nested folders, uploads, ZIP extraction, and favorites.
@@ -198,7 +202,17 @@ cv:
         start_date: 2025-01-01
         end_date: 2025-03-01
 
+      - name: Paragon
+        url: https://paragon.readthedocs.io/en/latest/
+        summary: Developed PARAGON, a high-performance parallel graph processing library featuring a C++ computational core with Python bindings, published as a Python package while maintaining performance critical logic in C++.
+        highlights:
+          - Built using C++, Python, CMake, OpenMP, and pybind11, implementing parallel graph algorithms including PageRank, SSSP, and Triangle Counting with optimized data structures and thread level parallelism.
+          - Benchmarked against sequential implementations, achieving up to 80× speedup in SSSP, 3.4× in Triangle Counting, and 2.5× in PageRank on multicore CPUs.
+        start_date: 2026-01-10
+        end_date: 2026-07-01
+
       - name: ATLAS – Adaptive Traffic Light Allocation System
+        url: https://github.com/saketjha34/ATLAS
         summary: A computer vision based adaptive traffic signal system that dynamically allocates signal timings using real-time vehicle detection and tracking.
         highlights:
           - Developed real-time vehicle detection and tracking using YOLOv8 and ByteTrack.
@@ -210,6 +224,7 @@ cv:
         end_date: 2024-12-01
 
       - name: FilmFusion
+        url: https://filmfusionai.streamlit.app/
         summary: A hybrid movie recommendation system combining semantic embeddings with content-based filtering.
         highlights:
           - Implemented hybrid recommendation using Sentence Transformers and semantic similarity.
@@ -219,11 +234,12 @@ cv:
         start_date: 2024-05-01
         end_date: 2024-07-01
 
+
     Extracurricular Activities:
       - bullet: |
           **[Web Club NITK](https://webclub.nitk.ac.in) — Member**  
-          • Presented and explained Mamba SSM and its advantages in efficient sequence modeling.  
-          • Discussed modern alternatives to transformer-based architectures.
+          • Organized Silicon Maze, Web Club’s flagship event, successfully coordinating 500+ online participants.  
+          • Conducted session on Mamba SSM , highlighting its architecture and advantages for efficient sequence modeling.
 
       - bullet: |
           **[IE NITK (Institution of Engineers)](https://ie.nitk.ac.in) — Member**  

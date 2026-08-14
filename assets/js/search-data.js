@@ -44,7 +44,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/experience/kalppo/";
               },
-            },{id: "post-semantic-search-with-faiss-from-theory-to-production",
+            },{id: "post-my-interview-experience-at-tredence-for-ds-role",
+        
+          title: "My Interview Experience at Tredence for DS Role",
+        
+        description: "In this blog, I have shared my complete Tredence Data Scientist recruitment experience, starting from the pre-placement talk and online assessments to the technical and HR interviews. I have also covered the questions asked in DSA, SQL, ML, DL, NLP, GenAI, DBMS, system design, Python, and more. I’ve also shared my preparation strategy, resources I used, tips for the placement season, and my overall experience with the recruitment process.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/tredence-interview-experience/";
+          
+        },
+      },{id: "post-semantic-search-with-faiss-from-theory-to-production",
         
           title: "Semantic Search with FAISS From Theory to Production",
         

@@ -41,8 +41,8 @@ I also enjoy playing video games, especially PC games such as horror, adventure,
 
 Another hobby I really enjoy is writing about my experiences and projects. I regularly document what I learn while building systems or working on new ideas.
 
-- **[Blogs](blog/)**
-- **[Projects](projects/)**
-- **[Work Experience](experience/kalppo/)**
+- **[Blogs](/blog/)**
+- **[Projects](/projects/)**
+- **[Work Experience](/experience/kalppo/)**
 
 Apart from tech and gaming, I also enjoy listening to music, which is probably the one thing I enjoy the most during long coding sessions or while relaxing after a busy day.

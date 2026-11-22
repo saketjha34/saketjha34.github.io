@@ -1,5 +1,5 @@
 cv:
-  name: Jha Saket Sunil 
+  name: Jha Saket Sunil
   label: Student
   email: saketjha0324@gmail.com
   location: Mumbai, Maharashtra, India
@@ -233,7 +233,6 @@ cv:
           - Built an interactive web interface using Streamlit.
         start_date: 2024-05-01
         end_date: 2024-07-01
-
 
     Extracurricular Activities:
       - bullet: |

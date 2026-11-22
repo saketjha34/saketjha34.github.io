@@ -3,12 +3,11 @@ layout: post
 title: Building Scalable Backend Systems with FastAPI and PostgreSQL
 date: 2025-08-22 21:00:00
 description: Building scalable backend systems is one of the most critical aspects of modern software development. In this comprehensive guide, we'll explore how to design and implement robust backend architectures using FastAPI and PostgreSQL that can handle millions of requests while maintaining high performance and reliability.
-tags: [backend, fastapi, postgresql,]
+tags: [backend, fastapi, postgresql]
 categories: backend-development
 # thumbnail: assets/img/9.jpg
 pinned: true
 ---
-
 
 ## Why FastAPI and PostgreSQL?
 
@@ -60,7 +59,7 @@ async def fetch_external_data(url: str):
 async def get_user_with_posts(db: AsyncSession, user_id: int):
     user_task = db.execute(select(User).where(User.id == user_id))
     posts_task = db.execute(select(Post).where(Post.user_id == user_id))
-    
+
     user_result, posts_result = await asyncio.gather(user_task, posts_task)
     return user_result.scalar_one(), posts_result.scalars().all()
 ```
@@ -90,15 +89,15 @@ Strategic indexing can dramatically improve query performance:
 
 ```sql
 -- Composite index for common query patterns
-CREATE INDEX CONCURRENTLY idx_posts_user_created 
+CREATE INDEX CONCURRENTLY idx_posts_user_created
 ON posts(user_id, created_at DESC);
 
 -- Partial index for active users
-CREATE INDEX CONCURRENTLY idx_active_users 
+CREATE INDEX CONCURRENTLY idx_active_users
 ON users(id) WHERE is_active = true;
 
 -- GIN index for JSON queries
-CREATE INDEX CONCURRENTLY idx_user_metadata 
+CREATE INDEX CONCURRENTLY idx_user_metadata
 ON users USING GIN(metadata);
 ```
 
@@ -118,12 +117,12 @@ def cache_result(expiration: int = 300):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             cache_key = f"{func.__name__}:{hash(str(args) + str(kwargs))}"
-            
+
             # Try to get from cache first
             cached = await redis_client.get(cache_key)
             if cached:
                 return json.loads(cached)
-            
+
             # Execute function and cache result
             result = await func(*args, **kwargs)
             await redis_client.setex(cache_key, expiration, json.dumps(result))
@@ -137,18 +136,18 @@ def cache_result(expiration: int = 300):
 ```python
 # Efficient pagination with cursor-based approach
 async def get_posts_paginated(
-    db: AsyncSession, 
-    cursor: Optional[int] = None, 
+    db: AsyncSession,
+    cursor: Optional[int] = None,
     limit: int = 20
 ):
     query = select(Post).order_by(Post.id.desc()).limit(limit)
-    
+
     if cursor:
         query = query.where(Post.id < cursor)
-    
+
     result = await db.execute(query)
     posts = result.scalars().all()
-    
+
     next_cursor = posts[-1].id if posts else None
     return {"posts": posts, "next_cursor": next_cursor}
 ```
@@ -168,12 +167,12 @@ REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request dura
 @app.middleware("http")
 async def metrics_middleware(request: Request, call_next):
     start_time = time.time()
-    
+
     response = await call_next(request)
-    
+
     REQUEST_COUNT.labels(method=request.method, endpoint=request.url.path).inc()
     REQUEST_DURATION.observe(time.time() - start_time)
-    
+
     return response
 ```
 
@@ -225,23 +224,23 @@ spec:
         app: fastapi-backend
     spec:
       containers:
-      - name: fastapi
-        image: your-registry/fastapi-backend:latest
-        ports:
-        - containerPort: 8000
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: url
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: fastapi
+          image: your-registry/fastapi-backend:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: url
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
 ```
 
 ## Testing Strategies
@@ -267,11 +266,11 @@ from locust import HttpUser, task, between
 
 class WebsiteUser(HttpUser):
     wait_time = between(1, 3)
-    
+
     @task
     def get_users(self):
         self.client.get("/users")
-    
+
     @task(3)
     def get_user_detail(self):
         self.client.get("/users/1")

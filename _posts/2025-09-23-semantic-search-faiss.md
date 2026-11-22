@@ -12,11 +12,13 @@ pinned: true
 ## Understanding Semantic Search
 
 Traditional search relies on exact keyword matches:
+
 - Query: "fast car"
 - Matches: Documents containing exactly "fast" and "car"
 
 Semantic search understands meaning:
-- Query: "fast car" 
+
+- Query: "fast car"
 - Matches: Documents about "speedy vehicles", "quick automobiles", "rapid transportation"
 
 ## Why FAISS?
@@ -42,32 +44,32 @@ class SemanticSearchEngine:
         self.index = None
         self.documents = []
         self.embeddings = None
-    
+
     def build_index(self, documents: List[str]):
         """Build FAISS index from documents"""
         self.documents = documents
         self.embeddings = self.model.encode(documents)
-        
+
         # Create FAISS index
         dimension = self.embeddings.shape[1]
         self.index = faiss.IndexFlatIP(dimension)  # Inner Product
-        
+
         # Normalize embeddings for cosine similarity
         faiss.normalize_L2(self.embeddings)
         self.index.add(self.embeddings.astype('float32'))
-    
+
     def search(self, query: str, k: int = 5) -> List[Tuple[str, float]]:
         """Search for similar documents"""
         query_embedding = self.model.encode([query])
         faiss.normalize_L2(query_embedding)
-        
+
         scores, indices = self.index.search(query_embedding.astype('float32'), k)
-        
+
         results = []
         for score, idx in zip(scores[0], indices[0]):
             if idx != -1:  # Valid result
                 results.append((self.documents[idx], float(score)))
-        
+
         return results
 ```
 
@@ -81,20 +83,20 @@ For large-scale datasets, use IVF indexing:
 def create_ivf_index(embeddings: np.ndarray, nlist: int = 100):
     """Create IVF index for faster search on large datasets"""
     dimension = embeddings.shape[1]
-    
+
     # Create quantizer
     quantizer = faiss.IndexFlatIP(dimension)
-    
+
     # Create IVF index
     index = faiss.IndexIVFFlat(quantizer, dimension, nlist)
-    
+
     # Train the index
     index.train(embeddings.astype('float32'))
     index.add(embeddings.astype('float32'))
-    
+
     # Set search parameters
     index.nprobe = 10  # Number of clusters to search
-    
+
     return index
 ```
 
@@ -106,11 +108,11 @@ For ultra-fast approximate search:
 def create_hnsw_index(embeddings: np.ndarray, M: int = 16):
     """Create HNSW index for fast approximate search"""
     dimension = embeddings.shape[1]
-    
+
     index = faiss.IndexHNSWFlat(dimension, M)
     index.hnsw.efConstruction = 200  # Construction parameter
     index.hnsw.efSearch = 50         # Search parameter
-    
+
     index.add(embeddings.astype('float32'))
     return index
 ```
@@ -134,7 +136,7 @@ class SearchResult:
 
 class ProductionSemanticSearch:
     def __init__(
-        self, 
+        self,
         model_name: str = "all-MiniLM-L6-v2",
         index_type: str = "flat",
         cache_dir: str = "./cache"
@@ -143,34 +145,34 @@ class ProductionSemanticSearch:
         self.index_type = index_type
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(exist_ok=True)
-        
+
         self.index = None
         self.documents = []
         self.metadata = []
-        
+
         self.logger = logging.getLogger(__name__)
-    
+
     def build_index(
-        self, 
-        documents: List[str], 
+        self,
+        documents: List[str],
         metadata: Optional[List[Dict]] = None,
         save_path: Optional[str] = None
     ):
         """Build and optionally save the search index"""
         self.documents = documents
         self.metadata = metadata or [{}] * len(documents)
-        
+
         # Generate embeddings
         self.logger.info(f"Encoding {len(documents)} documents...")
         embeddings = self.model.encode(
-            documents, 
+            documents,
             show_progress_bar=True,
             batch_size=32
         )
-        
+
         # Create appropriate index
         dimension = embeddings.shape[1]
-        
+
         if self.index_type == "flat":
             self.index = faiss.IndexFlatIP(dimension)
         elif self.index_type == "ivf":
@@ -180,69 +182,69 @@ class ProductionSemanticSearch:
             self.index.train(embeddings.astype('float32'))
         elif self.index_type == "hnsw":
             self.index = faiss.IndexHNSWFlat(dimension, 16)
-        
+
         # Normalize and add embeddings
         faiss.normalize_L2(embeddings)
         self.index.add(embeddings.astype('float32'))
-        
+
         # Save if requested
         if save_path:
             self.save_index(save_path)
-        
+
         self.logger.info(f"Index built with {self.index.ntotal} vectors")
-    
+
     def search(
-        self, 
-        query: str, 
+        self,
+        query: str,
         k: int = 10,
         filter_func: Optional[callable] = None
     ) -> List[SearchResult]:
         """Search with optional filtering"""
         if self.index is None:
             raise ValueError("Index not built. Call build_index() first.")
-        
+
         # Encode query
         query_embedding = self.model.encode([query])
         faiss.normalize_L2(query_embedding)
-        
+
         # Search
         search_k = k * 2 if filter_func else k  # Get more results for filtering
         scores, indices = self.index.search(
-            query_embedding.astype('float32'), 
+            query_embedding.astype('float32'),
             search_k
         )
-        
+
         # Process results
         results = []
         for score, idx in zip(scores[0], indices[0]):
             if idx == -1:
                 continue
-                
+
             metadata = self.metadata[idx]
-            
+
             # Apply filter if provided
             if filter_func and not filter_func(metadata):
                 continue
-            
+
             results.append(SearchResult(
                 document=self.documents[idx],
                 score=float(score),
                 metadata=metadata
             ))
-            
+
             if len(results) >= k:
                 break
-        
+
         return results
-    
+
     def save_index(self, path: str):
         """Save index and metadata to disk"""
         save_path = Path(path)
         save_path.mkdir(exist_ok=True)
-        
+
         # Save FAISS index
         faiss.write_index(self.index, str(save_path / "index.faiss"))
-        
+
         # Save documents and metadata
         with open(save_path / "documents.pkl", "wb") as f:
             pickle.dump({
@@ -250,22 +252,22 @@ class ProductionSemanticSearch:
                 "metadata": self.metadata,
                 "model_name": self.model.get_sentence_embedding_dimension()
             }, f)
-        
+
         self.logger.info(f"Index saved to {save_path}")
-    
+
     def load_index(self, path: str):
         """Load index and metadata from disk"""
         load_path = Path(path)
-        
+
         # Load FAISS index
         self.index = faiss.read_index(str(load_path / "index.faiss"))
-        
+
         # Load documents and metadata
         with open(load_path / "documents.pkl", "rb") as f:
             data = pickle.load(f)
             self.documents = data["documents"]
             self.metadata = data["metadata"]
-        
+
         self.logger.info(f"Index loaded from {load_path}")
 ```
 
@@ -281,12 +283,12 @@ def batch_encode_documents(
 ) -> np.ndarray:
     """Efficiently encode large document collections"""
     embeddings = []
-    
+
     for i in range(0, len(documents), batch_size):
         batch = documents[i:i + batch_size]
         batch_embeddings = model.encode(batch, convert_to_numpy=True)
         embeddings.append(batch_embeddings)
-    
+
     return np.vstack(embeddings)
 ```
 
@@ -296,17 +298,17 @@ def batch_encode_documents(
 def create_gpu_index(embeddings: np.ndarray, gpu_id: int = 0):
     """Create GPU-accelerated FAISS index"""
     dimension = embeddings.shape[1]
-    
+
     # Create CPU index first
     cpu_index = faiss.IndexFlatIP(dimension)
-    
+
     # Move to GPU
     res = faiss.StandardGpuResources()
     gpu_index = faiss.index_cpu_to_gpu(res, gpu_id, cpu_index)
-    
+
     # Add embeddings
     gpu_index.add(embeddings.astype('float32'))
-    
+
     return gpu_index
 ```
 
@@ -339,7 +341,7 @@ async def search_documents(request: SearchRequest):
     """Search documents using semantic similarity"""
     import time
     start_time = time.time()
-    
+
     try:
         # Define filter function if filters provided
         filter_func = None
@@ -349,21 +351,21 @@ async def search_documents(request: SearchRequest):
                     if metadata.get(key) != value:
                         return False
                 return True
-        
+
         # Perform search
         results = search_engine.search(
             query=request.query,
             k=request.k,
             filter_func=filter_func
         )
-        
+
         total_time = time.time() - start_time
-        
+
         return SearchResponse(
             results=results,
             total_time=total_time
         )
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -389,34 +391,34 @@ def evaluate_search_quality(
     k: int = 10
 ) -> Dict[str, float]:
     """Evaluate search quality using standard metrics"""
-    
+
     def calculate_precision_at_k(retrieved: List[str], relevant: List[str], k: int) -> float:
         retrieved_k = retrieved[:k]
         relevant_retrieved = len(set(retrieved_k) & set(relevant))
         return relevant_retrieved / min(k, len(retrieved_k)) if retrieved_k else 0
-    
+
     def calculate_recall_at_k(retrieved: List[str], relevant: List[str], k: int) -> float:
         retrieved_k = retrieved[:k]
         relevant_retrieved = len(set(retrieved_k) & set(relevant))
         return relevant_retrieved / len(relevant) if relevant else 0
-    
+
     precisions = []
     recalls = []
-    
+
     for query, relevant_docs in zip(test_queries, ground_truth):
         results = search_engine.search(query, k=k)
         retrieved_docs = [r.document for r in results]
-        
+
         precision = calculate_precision_at_k(retrieved_docs, relevant_docs, k)
         recall = calculate_recall_at_k(retrieved_docs, relevant_docs, k)
-        
+
         precisions.append(precision)
         recalls.append(recall)
-    
+
     avg_precision = np.mean(precisions)
     avg_recall = np.mean(recalls)
     f1_score = 2 * (avg_precision * avg_recall) / (avg_precision + avg_recall) if (avg_precision + avg_recall) > 0 else 0
-    
+
     return {
         "precision@k": avg_precision,
         "recall@k": avg_recall,
@@ -483,11 +485,11 @@ logger = structlog.get_logger()
 @app.middleware("http")
 async def logging_middleware(request: Request, call_next):
     start_time = time.time()
-    
+
     response = await call_next(request)
-    
+
     duration = time.time() - start_time
-    
+
     logger.info(
         "request_completed",
         method=request.method,
@@ -495,10 +497,10 @@ async def logging_middleware(request: Request, call_next):
         status_code=response.status_code,
         duration=duration
     )
-    
+
     SEARCH_REQUESTS.inc()
     SEARCH_DURATION.observe(duration)
-    
+
     return response
 ```
 

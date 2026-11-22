@@ -74,7 +74,9 @@ jobs:
       - name: Setup Ruby 💎
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.5"
+          # Track the latest Ruby 3.3 patch release so the workflow remains
+          # compatible when GitHub updates its hosted runner image.
+          ruby-version: "3.3"
           bundler-cache: true
       - name: Setup Python 🐍
         uses: actions/setup-python@v5

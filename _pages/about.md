@@ -27,7 +27,7 @@ latest_posts:
   limit: 4 # leave blank to include all the blog posts
 ---
 
-*Hola amigo!*
+_Hola amigo!_
 
 This is Saket. I am currently studying at the National Institute of Technology Karnataka (NITK), Mangalore, India. I was born and brought up in Mumbai, Maharashtra, where I spent most of my early years.
 
@@ -35,13 +35,13 @@ I am deeply interested in AI & Maths. I enjoy exploring how AI can be used to so
 
 Outside of academics and engineering, I have a wide range of interests.
 
-In sports, I enjoy watching Cricket, Football, Tennis & Esports.  
+In sports, I enjoy watching Cricket, Football, Tennis & Esports.
 
 I also enjoy playing video games, especially PC games such as horror, adventure, and story mode games. Some of my favorite gaming experiences come from immersive single player games with strong storytelling.
 
 Another hobby I really enjoy is writing about my experiences and projects. I regularly document what I learn while building systems or working on new ideas.
 
-- **[Blogs](blog/)** 
+- **[Blogs](blog/)**
 - **[Projects](projects/)**
 - **[Work Experience](experience/kalppo/)**
 

@@ -16,11 +16,11 @@ pseudocode: true
 
 The engine focuses on **performance, scalability, and modularity**, enabling efficient execution of classical graph algorithms such as:
 
-* Breadth First Search (BFS)
-* PageRank (Push / Pull variants)
-* Connected Components
-* Single Source Shortest Path (SSSP)
-* Triangle Counting
+- Breadth First Search (BFS)
+- PageRank (Push / Pull variants)
+- Connected Components
+- Single Source Shortest Path (SSSP)
+- Triangle Counting
 
 PARAGON uses **static work partitioning, cache-aware data structures, and barrier synchronization** to maximize CPU utilization while minimizing synchronization overhead.
 
@@ -34,19 +34,19 @@ GitHub Repository:
 
 Large real-world graphs appear in many domains:
 
-* Social networks
-* Web graphs
-* Transportation networks
-* Knowledge graphs
-* Biological interaction networks
+- Social networks
+- Web graphs
+- Transportation networks
+- Knowledge graphs
+- Biological interaction networks
 
 These graphs often contain **millions or billions of edges**, making sequential algorithms inefficient.
 
 PARAGON was developed to explore **parallel graph processing techniques** similar to systems like:
 
-* GraphLab
-* Ligra
-* Gunrock
+- GraphLab
+- Ligra
+- Gunrock
 
 but implemented as a **lightweight high-performance C++ engine**.
 
@@ -89,9 +89,9 @@ The graph is stored using a **compressed adjacency list** representation.
 
 Advantages:
 
-* Efficient memory usage
-* Fast traversal
-* Cache-friendly access patterns
+- Efficient memory usage
+- Fast traversal
+- Cache-friendly access patterns
 
 Example structure:
 
@@ -122,9 +122,9 @@ Each thread processes a **partition of vertices** independently.
 
 Key concepts:
 
-* Static partitioning
-* Barrier synchronization
-* Lock-free reads where possible
+- Static partitioning
+- Barrier synchronization
+- Lock-free reads where possible
 
 Parallel execution skeleton:
 
@@ -204,8 +204,8 @@ PR(v) = (1 - d)/N + d * Σ(PR(u)/deg(u))
 
 where:
 
-* `d` = damping factor
-* `N` = number of vertices
+- `d` = damping factor
+- `N` = number of vertices
 
 ### Parallel PageRank Pseudocode
 
@@ -302,9 +302,9 @@ Triangle counting identifies **3-node fully connected subgraphs**.
 
 Applications:
 
-* Community detection
-* Social network analysis
-* Graph clustering
+- Community detection
+- Social network analysis
+- Graph clustering
 
 ### Pseudocode
 
@@ -357,11 +357,11 @@ The engine demonstrated **significant speedups on multicore processors** compare
 
 # Technologies Used
 
-* **C++**
-* Multithreading (OpenMP / std::thread)
-* Graph Algorithms
-* Performance Optimization
-* Parallel Computing
+- **C++**
+- Multithreading (OpenMP / std::thread)
+- Graph Algorithms
+- Performance Optimization
+- Parallel Computing
 
 ---
 
@@ -369,10 +369,10 @@ The engine demonstrated **significant speedups on multicore processors** compare
 
 Planned improvements include:
 
-* Dynamic graph support
-* GPU acceleration
-* Distributed graph processing
-* Graph neural network integration
+- Dynamic graph support
+- GPU acceleration
+- Distributed graph processing
+- Graph neural network integration
 
 ---
 
@@ -384,7 +384,7 @@ GitHub:
 
 The repository contains:
 
-* modular graph engine
-* algorithm implementations
-* benchmark examples
-* documentation
+- modular graph engine
+- algorithm implementations
+- benchmark examples
+- documentation

@@ -51,11 +51,9 @@ Some of my friends were asked recursive CTE-based questions.
 
 OA 1 extended up to 1:30 PM, and then we had a lunch break.
 
-
 Around 2:00 PM, the shortlist for OA 2 came out, and around 23 students were shortlisted. The second OA was again held offline in LHC D and was for 45 minutes.
 
 This OA was divided into 4 sections, mainly testing listening comprehension, grammar, and reading comprehension.
-
 
 ### Section 1
 
@@ -75,7 +73,6 @@ We were given around 3–4 topics and had to speak continuously for around 1 min
 
 Around 3 PM, I completed the test, and after around 30 minutes, the technical interviews started in CDC at around 3:45 PM.
 
-
 # Technical Round 1
 
 My first technical interview started around 4:30 PM.
@@ -84,12 +81,12 @@ The interviewer introduced himself and then asked me to introduce myself. He the
 
 Based on my projects, he asked questions about:
 
-* Multithreading vs multiprocessing
-* Why OpenMP?
-* True parallelism vs concurrency
-* Vector databases and indexing
-* Word embeddings, Word2Vec
-* Tokenization, lemmatization, and other NLP concepts
+- Multithreading vs multiprocessing
+- Why OpenMP?
+- True parallelism vs concurrency
+- Vector databases and indexing
+- Word embeddings, Word2Vec
+- Tokenization, lemmatization, and other NLP concepts
 
 Then he asked me a DSA question, which was mainly based on Pandas/DataFrames with a follow-up.
 
@@ -101,10 +98,10 @@ I was given a list of sentences and had to use **Pandas and NumPy** to generate 
 ID | Sentence | Cost | Length
 ```
 
-* ID from 1 to 100000
-* Randomly select a sentence
-* Random cost between 0 and 100
-* Length of the selected sentence
+- ID from 1 to 100000
+- Randomly select a sentence
+- Random cost between 0 and 100
+- Length of the selected sentence
 
 First, I had to explain my approach on paper and then code it in Python on an online IDE and print the first 5 rows.
 
@@ -127,17 +124,17 @@ The second question gave me 2 tables with their primary and foreign key relation
 > Find each customer's total spending and rank the customers based on their total spending, from highest to lowest.
 
 I solved it using:
-JOIN  GROUP BY  SUM  RANK ORDER BY
+JOIN GROUP BY SUM RANK ORDER BY
 
 ### Core ML
 
 He then asked some core ML questions such as:
 
-* Vanishing gradient
-* Overfitting
-* Cost function for Linear Regression
-* Cost function for Logistic Regression
-* Precision, Recall, and F1 Score
+- Vanishing gradient
+- Overfitting
+- Cost function for Linear Regression
+- Cost function for Logistic Regression
+- Precision, Recall, and F1 Score
 
 I had to explain/write some of these on paper.
 
@@ -151,7 +148,6 @@ I came up with a queue-based solution to handle the API requests and avoid the i
 
 Overall, Round 1 was pretty chill. The interviewer was also very helpful and gave me hints and helped with code and syntax when needed.
 
-
 # Technical Round 2
 
 Just after my Round 1, after 2–3 minutes, I was called for Round 2.
@@ -162,14 +158,14 @@ Then, for around 20 minutes, he mostly grilled me on my resume and work experien
 
 Questions on my resume were like:
 
-* Draw the architecture diagram of the AI service
-* List out SQL models and relationships between tables
-* How the backend and AI service communicate
-* Types of databases: SQL and NoSQL
-* Methods of indexing a database
-* Authentication vs authorization
-* Docker and Kubernetes basic commands
-* Unix questions
+- Draw the architecture diagram of the AI service
+- List out SQL models and relationships between tables
+- How the backend and AI service communicate
+- Types of databases: SQL and NoSQL
+- Methods of indexing a database
+- Authentication vs authorization
+- Docker and Kubernetes basic commands
+- Unix questions
 
 I had to explain these on pen and paper.
 
@@ -188,7 +184,6 @@ At last, he asked me this LeetCode question:
 [link](https://leetcode.com/problems/valid-palindrome-ii/description/)
 
 I had to explain the approach, write the pseudocode, explain the intuition with a dry run on a test case, and discuss the edge cases.
-
 
 # HR Round
 
@@ -213,7 +208,6 @@ The SPOCs then said that some of the interviews were scheduled for the next day,
 
 The next day, the results were announced, and 2 of us were selected for the DS FTE roles :)
 
-
 # Your Way of Preparation
 
 I started with AI/ML in my first year itself. For core ML and AI resources, I would suggest watching Andrew Ng's ML and DL courses on Coursera, or CS229 and CS230 on YouTube.
@@ -226,7 +220,6 @@ For DBMS, watch Gate Smashers or Love Babbar's DBMS notes.
 
 Start as early as possible.
 
-
 # Overall Experience
 
 Overall, the experience was really good. Everything was organized and well planned. The interviewers were also really supportive, and communication was really easy.
@@ -234,7 +227,6 @@ Overall, the experience was really good. Everything was organized and well plann
 The SPOCs also coordinated really well and were helpful regarding any queries.
 
 Overall, it was a really good experience.
-
 
 # Advice for the Particular Company
 
@@ -246,16 +238,14 @@ Be thorough with your resume and focus mostly on DSA, SQL, and core ML, along wi
 
 Try building AI/ML projects, and for the OAs, I would suggest revising your ML/DL notes.
 
-
 # General Tips for Placement Season
 
 Getting placed early helps a lot with mental peace, but the placement season can be quite stressful, especially when you have to manage academics and placements at the same time.
 
 My biggest advice would be to start preparing as early as possible. Have a clear idea of the roles you are targeting and prepare consistently every day instead of trying to cover everything at the last moment. Building a strong foundation early will help you a lot during OAs and interviews.
 
-Try to give as many mock interviews** as possible and take feedback from your seniors. Also, get your resume reviewed and keep improving it based on the roles you are applying for.
+Try to give as many mock interviews\*\* as possible and take feedback from your seniors. Also, get your resume reviewed and keep improving it based on the roles you are applying for.
 
 Most importantly, don't get demotivated by rejections. You will get rejected from interviews, you might not clear some OAs, and sometimes you may feel that your preparation is not working. This is completely normal during placement season.
 
 Trust the process, keep improving after every rejection, and stay consistent. Eventually, you will get placed.
-

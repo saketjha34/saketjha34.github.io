@@ -124,7 +124,7 @@ pagination:
 
 {% if post.thumbnail %}
 
-<div class="row">
+<div class="row post-list-item-row">
           <div class="col-sm-9">
 {% endif %}
         <h3>
@@ -178,8 +178,8 @@ pagination:
 
 </div>
 
-  <div class="col-sm-3">
-    <img class="card-img" src="{{ post.thumbnail | relative_url }}" style="object-fit: cover; height: 90%" alt="image">
+  <div class="col-sm-3 post-thumbnail-column">
+    <img class="post-thumbnail" src="{{ post.thumbnail | relative_url }}" alt="Thumbnail for {{ post.title | escape }}">
   </div>
 </div>
 {% endif %}

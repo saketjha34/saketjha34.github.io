@@ -44,7 +44,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/experience/kalppo/";
               },
-            },{id: "post-my-interview-experience-at-tredence-for-ds-role",
+            },{id: "post-amazon-ml-challenge-2026",
+        
+          title: "Amazon ML Challenge 2026",
+        
+        description: "My three-day Amazon ML Challenge 2026 journey, moving from an early score of 0.551736 to 0.969642 through data preprocessing, AI-assisted development, multilingual normalization, candidate generation, contextual features, XGBoost stacking, and precision-aware thresholding.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/amazon-ml-challenge-2026/";
+          
+        },
+      },{id: "post-my-interview-experience-at-tredence-for-ds-role",
         
           title: "My Interview Experience at Tredence for DS Role",
         
